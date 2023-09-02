@@ -2,3 +2,7 @@
 	width: 100%;
 	flex-wrap: wrap;
 }
+
+[remont_market_find_main_tools] {
+	display: none;
+}
