@@ -16,8 +16,8 @@ jobs:
     
     - uses: hyoo-ru/mam_build@master2
       with:
-        package: 'remont' #FIXME namespace of this package
-        modules: 'market' #FIXME which modules to build, remove line if only on module at the root
+        package: 'remont'
+        modules: 'market'
     
     - uses: JamesIves/github-pages-deploy-action@4.1.7
       with:
