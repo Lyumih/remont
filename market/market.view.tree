@@ -1,5 +1,16 @@
 $remont_market $mol_page
 	title \Поиск товара v1
 	body /
-		<= Shops $remont_market_shops
 		<= Find $hyoo_search_app
+			searchers \
+				\https://www.avito.ru/?q=
+				\https://market.yandex.ru/search?text=
+				\https://www.ozon.ru/search/?from_global=true&text=
+				\https://www.wildberries.ru/catalog/0/search.aspx?search=
+				\https://megamarket.ru/catalog/?q=
+				\https://leroymerlin.ru/search/?q=
+				\https://www.vseinstrumenti.ru/search/?what=
+				\https://www.citilink.ru/search/?text=
+				\https://www.mvideo.ru/product-list-page?q=
+				\https://www.dns-shop.ru/search/?q=
+				\https://www.tula.bestmebelshop.ru/search/index.php?q=
