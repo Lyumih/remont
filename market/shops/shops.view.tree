@@ -1,0 +1,7 @@
+$remont_market_shops $mol_view
+	sub /
+		<= Shops $mol_view
+			sub <= shop_list /
+				<= Shop* $mol_link_iconed
+					title <= shop_title* \
+					uri <= shop_uri* \
