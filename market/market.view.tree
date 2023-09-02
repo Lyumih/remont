@@ -1,5 +1,5 @@
 $remont_market $mol_page
-	title \Поиск товара
+	title \Поиск товара v1
 	body /
 		<= Shops $remont_market_shops
 		<= Find $hyoo_search_app
