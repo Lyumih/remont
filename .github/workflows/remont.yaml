@@ -16,10 +16,10 @@ jobs:
     
     - uses: hyoo-ru/mam_build@master2
       with:
-        package: 'hyoo/template' #FIXME namespace of this package
-        modules: 'app' #FIXME which modules to build, remove line if only on module at the root
+        package: 'remont' #FIXME namespace of this package
+        modules: 'master' #FIXME which modules to build, remove line if only on module at the root
     
     - uses: JamesIves/github-pages-deploy-action@4.1.7
       with:
         branch: gh-pages
-        folder: remont/market2/-
+        folder: remont
