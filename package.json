@@ -1,5 +1,5 @@
 {
-  "name": "lyumih_remont_market",
+  "name": "remont_market",
   "version": "0.0.1",
   "exports": {
     "node": {
@@ -15,9 +15,8 @@
   "browser": "./web.js",
   "types": "./web.d.ts",
   "keywords": [
-    "$lyumih_remont_market",
-    "$lyumih_remont",
-    "$lyumih"
+    "$remont_market",
+    "$remont"
   ],
   "dependencies": {}
 }
