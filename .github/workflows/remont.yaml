@@ -16,7 +16,8 @@ jobs:
     
     - uses: hyoo-ru/mam_build@master2
       with:
-        package: remont
+        package: 'hyoo/template' #FIXME namespace of this package
+        modules: 'app' #FIXME which modules to build, remove line if only on module at the root
     
     - uses: JamesIves/github-pages-deploy-action@4.1.7
       with:
