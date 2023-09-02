@@ -795,13 +795,16 @@ $hyoo_search_app $mol_book2
 $remont_market $mol_page
 	title \Поиск товара v1
 	body /
-		<= Shops $remont_market_shops
 		<= Find $hyoo_search_app
-
-$remont_market_shops $mol_view
-	sub /
-		<= Shops $mol_view
-			sub <= shop_list /
-				<= Shop*0 $mol_link_iconed
-					title <= shop_title* \
-					uri <= shop_uri* \
+			searchers \
+				\https://www.avito.ru/?q=
+				\https://market.yandex.ru/search?text=
+				\https://www.ozon.ru/search/?from_global=true&text=
+				\https://www.wildberries.ru/catalog/0/search.aspx?search=
+				\https://megamarket.ru/catalog/?q=
+				\https://leroymerlin.ru/search/?q=
+				\https://www.vseinstrumenti.ru/search/?what=
+				\https://www.citilink.ru/search/?text=
+				\https://www.mvideo.ru/product-list-page?q=
+				\https://www.dns-shop.ru/search/?q=
+				\https://www.tula.bestmebelshop.ru/search/index.php?q=

@@ -201,6 +201,75 @@ var $;
 ;
 "use strict";
 var $;
+(function ($) {
+    class $mol_after_tick extends $mol_object2 {
+        task;
+        promise;
+        cancelled = false;
+        constructor(task) {
+            super();
+            this.task = task;
+            this.promise = Promise.resolve().then(() => {
+                if (this.cancelled)
+                    return;
+                task();
+            });
+        }
+        destructor() {
+            this.cancelled = true;
+        }
+    }
+    $.$mol_after_tick = $mol_after_tick;
+})($ || ($ = {}));
+//mol/after/tick/tick.ts
+;
+"use strict";
+var $;
+(function ($) {
+})($ || ($ = {}));
+//mol/dom/context/context.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_dom_context = self;
+})($ || ($ = {}));
+//mol/dom/context/context.web.ts
+;
+"use strict";
+var $;
+(function ($) {
+    let all = [];
+    let el = null;
+    let timer = null;
+    function $mol_style_attach_force() {
+        if (all.length) {
+            el.innerHTML += '\n' + all.join('\n\n');
+            all = [];
+        }
+        timer = null;
+        return el;
+    }
+    $.$mol_style_attach_force = $mol_style_attach_force;
+    function $mol_style_attach(id, text) {
+        all.push(`/* ${id} */\n\n${text}`);
+        if (timer)
+            return el;
+        const doc = $mol_dom_context.document;
+        if (!doc)
+            return null;
+        el = doc.createElement('style');
+        el.id = `$mol_style_attach`;
+        doc.head.appendChild(el);
+        timer = new $mol_after_tick($mol_style_attach_force);
+        return el;
+    }
+    $.$mol_style_attach = $mol_style_attach;
+})($ || ($ = {}));
+//mol/style/attach/attach.ts
+;
+"use strict";
+var $;
 (function ($_1) {
     let $$;
     (function ($$) {
@@ -1390,43 +1459,6 @@ var $;
 "use strict";
 var $;
 (function ($) {
-})($ || ($ = {}));
-//mol/dom/context/context.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_dom_context = self;
-})($ || ($ = {}));
-//mol/dom/context/context.web.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_after_tick extends $mol_object2 {
-        task;
-        promise;
-        cancelled = false;
-        constructor(task) {
-            super();
-            this.task = task;
-            this.promise = Promise.resolve().then(() => {
-                if (this.cancelled)
-                    return;
-                task();
-            });
-        }
-        destructor() {
-            this.cancelled = true;
-        }
-    }
-    $.$mol_after_tick = $mol_after_tick;
-})($ || ($ = {}));
-//mol/after/tick/tick.ts
-;
-"use strict";
-var $;
-(function ($) {
     class $mol_view_selection extends $mol_object {
         static focused(next, notify) {
             const parents = [];
@@ -1767,38 +1799,6 @@ var $;
 ;
 "use strict";
 //mol/type/pick/pick.ts
-;
-"use strict";
-var $;
-(function ($) {
-    let all = [];
-    let el = null;
-    let timer = null;
-    function $mol_style_attach_force() {
-        if (all.length) {
-            el.innerHTML += '\n' + all.join('\n\n');
-            all = [];
-        }
-        timer = null;
-        return el;
-    }
-    $.$mol_style_attach_force = $mol_style_attach_force;
-    function $mol_style_attach(id, text) {
-        all.push(`/* ${id} */\n\n${text}`);
-        if (timer)
-            return el;
-        const doc = $mol_dom_context.document;
-        if (!doc)
-            return null;
-        el = doc.createElement('style');
-        el.id = `$mol_style_attach`;
-        doc.head.appendChild(el);
-        timer = new $mol_after_tick($mol_style_attach_force);
-        return el;
-    }
-    $.$mol_style_attach = $mol_style_attach;
-})($ || ($ = {}));
-//mol/style/attach/attach.ts
 ;
 "use strict";
 var $;
@@ -10591,22 +10591,15 @@ var $;
         }
         body() {
             return [
-                this.Shops(),
                 this.Find()
             ];
         }
-        Shops() {
-            const obj = new this.$.$remont_market_shops();
-            return obj;
-        }
         Find() {
             const obj = new this.$.$hyoo_search_app();
+            obj.searchers = () => "https://www.avito.ru/?q=\nhttps://market.yandex.ru/search?text=\nhttps://www.ozon.ru/search/?from_global=true&text=\nhttps://www.wildberries.ru/catalog/0/search.aspx?search=\nhttps://megamarket.ru/catalog/?q=\nhttps://leroymerlin.ru/search/?q=\nhttps://www.vseinstrumenti.ru/search/?what=\nhttps://www.citilink.ru/search/?text=\nhttps://www.mvideo.ru/product-list-page?q=\nhttps://www.dns-shop.ru/search/?q=\nhttps://www.tula.bestmebelshop.ru/search/index.php?q=";
             return obj;
         }
     }
-    __decorate([
-        $mol_mem
-    ], $remont_market.prototype, "Shops", null);
     __decorate([
         $mol_mem
     ], $remont_market.prototype, "Find", null);
@@ -10617,88 +10610,8 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $remont_market_shops extends $mol_view {
-        sub() {
-            return [
-                this.Shops()
-            ];
-        }
-        shop_title(id) {
-            return "";
-        }
-        shop_uri(id) {
-            return "";
-        }
-        Shop(id) {
-            const obj = new this.$.$mol_link_iconed();
-            obj.title = () => this.shop_title(id);
-            obj.uri = () => this.shop_uri(id);
-            return obj;
-        }
-        shop_list() {
-            return [
-                this.Shop("0")
-            ];
-        }
-        Shops() {
-            const obj = new this.$.$mol_view();
-            obj.sub = () => this.shop_list();
-            return obj;
-        }
-    }
-    __decorate([
-        $mol_mem_key
-    ], $remont_market_shops.prototype, "Shop", null);
-    __decorate([
-        $mol_mem
-    ], $remont_market_shops.prototype, "Shops", null);
-    $.$remont_market_shops = $remont_market_shops;
+    $mol_style_attach("remont/market/market.view.css", "[remont_market_find_main_tools] {\n\tdisplay: none;\n}\n\n[remont_market_find_main_foot] {\n\tflex-wrap: wrap;\n}");
 })($ || ($ = {}));
-//remont/market/shops/-view.tree/shops.view.tree.ts
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        class $remont_market_shops extends $.$remont_market_shops {
-            shops() {
-                const query_arg = $mol_state_arg.value('query') || '';
-                const query = query_arg.replaceAll(/(купить|куплю|заказать)/gi, '').trim();
-                return [
-                    { title: "Avito", uri: `https://www.avito.ru/?q=${query}` },
-                    { title: "Я.Маркет", uri: `https://market.yandex.ru/search?text=${query}` },
-                    { title: "Ozon", uri: `https://www.ozon.ru/search/?text=${query}&from_global=true` },
-                    { title: "WB", uri: `https://www.wildberries.ru/catalog/0/search.aspx?search=${query}` },
-                    { title: "Мегамаркет", uri: `https://megamarket.ru/catalog/?q=${query}` },
-                    { title: "Leroy", uri: `https://leroymerlin.ru/search/?q=${query}` },
-                    { title: "Все инструменты", uri: `https://www.vseinstrumenti.ru/search/?what=${query}` },
-                    { title: "Ситилинк", uri: `https://www.citilink.ru/search/?text=${query}` },
-                    { title: "М.Видео", uri: `https://www.mvideo.ru/product-list-page?q=${query}` },
-                    { title: "DNS", uri: `https://www.dns-shop.ru/search/?q=${query}` },
-                    { title: "BestMebel", uri: `https://www.tula.bestmebelshop.ru/search/index.php?q=${query}` },
-                ];
-            }
-            shop_list() {
-                return this.shops().map((shop) => this.Shop(shop.title));
-            }
-            shop_title(id) {
-                return this.shops().find(i => i.title === id)?.title || '';
-            }
-            shop_uri(id) {
-                return this.shops().find(i => i.title === id)?.uri || '';
-            }
-        }
-        $$.$remont_market_shops = $remont_market_shops;
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-//remont/market/shops/shops.view.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_style_attach("remont/market/shops/shops.view.css", "[remont_market_shops_shops] {\n\twidth: 100%;\n\tflex-wrap: wrap;\n}\n\n[remont_market_find_main_tools] {\n\tdisplay: none;\n}\n");
-})($ || ($ = {}));
-//remont/market/shops/-css/shops.view.css.ts
+//remont/market/-css/market.view.css.ts
 
 //# sourceMappingURL=web.js.map

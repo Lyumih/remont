@@ -68,6 +68,28 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    class $mol_after_tick extends $mol_object2 {
+        task: () => void;
+        promise: any;
+        cancelled: boolean;
+        constructor(task: () => void);
+        destructor(): void;
+    }
+}
+
+declare namespace $ {
+    var $mol_dom_context: typeof globalThis;
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    function $mol_style_attach_force(): HTMLStyleElement;
+    function $mol_style_attach(id: string, text: string): HTMLStyleElement | null;
+}
+
+declare namespace $ {
     namespace $$ { }
     const $mol_object_field: unique symbol;
     class $mol_object extends $mol_object2 {
@@ -326,23 +348,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    var $mol_dom_context: typeof globalThis;
-}
-
-declare namespace $ {
-}
-
-declare namespace $ {
-    class $mol_after_tick extends $mol_object2 {
-        task: () => void;
-        promise: any;
-        cancelled: boolean;
-        constructor(task: () => void);
-        destructor(): void;
-    }
-}
-
-declare namespace $ {
     class $mol_view_selection extends $mol_object {
         static focused(next?: Element[], notify?: 'notify'): Element[];
     }
@@ -437,11 +442,6 @@ declare namespace $ {
 
 declare namespace $ {
     type $mol_type_pick<Input, Upper> = Pick<Input, $mol_type_keys_extract<Input, Upper>>;
-}
-
-declare namespace $ {
-    function $mol_style_attach_force(): HTMLStyleElement;
-    function $mol_style_attach(id: string, text: string): HTMLStyleElement | null;
 }
 
 declare namespace $ {
@@ -3238,31 +3238,7 @@ declare namespace $ {
     class $remont_market extends $mol_page {
         title(): string;
         body(): readonly any[];
-        Shops(): $$.$remont_market_shops;
         Find(): $$.$hyoo_search_app;
-    }
-}
-
-declare namespace $ {
-    class $remont_market_shops extends $mol_view {
-        sub(): readonly any[];
-        shop_title(id: any): string;
-        shop_uri(id: any): string;
-        Shop(id: any): $$.$mol_link_iconed;
-        shop_list(): readonly any[];
-        Shops(): $mol_view;
-    }
-}
-
-declare namespace $.$$ {
-    class $remont_market_shops extends $.$remont_market_shops {
-        shops(): {
-            title: string;
-            uri: string;
-        }[];
-        shop_list(): readonly any[];
-        shop_title(id: any): string;
-        shop_uri(id: any): string;
     }
 }
 
