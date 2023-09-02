@@ -1,10 +1,10 @@
-#FIXME change file name to actual app name
-#FIXME change to actual app name
-name: $remont_market
+name: Deploy
 
 on:
   workflow_dispatch:
   push:
+    branches: 
+    - main
   pull_request:
   schedule:
   - cron: "0 7 * * *"
@@ -16,20 +16,40 @@ jobs:
     
     steps:
     
-    - uses: hyoo-ru/mam_build@master2
-      with:
-        package: 'remont' #FIXME namespace of this package
-        modules: 'market' #FIXME which modules to build, remove line if only on module at the root
+    - name: Environment Printer
+      uses: managedkaos/print-env@v1.0
     
-    #FIXME remove one of the following
-    
-    - uses: JS-DevTools/npm-publish@v1
-      if: github.ref == 'refs/heads/master'
+    - name: Build apps
+      uses: hyoo-ru/mam_build@master2
       with:
-        token: ${{ secrets.NPM_AUTH_TOKEN }}
-        package: ./mol/template/app/-/package.json #FIXME path to build module
+        token: ${{ secrets.GH_PAT }}
+        package: remont
+        modules: market
         
-    - uses: hyoo-ru/gh-deploy@v4.4.1
-      if: github.ref == 'refs/heads/master'
+    - name: Consolidate apps
+      run: |
+        rm -rf remont/.git
+        rm -rf remont/.github
+        rm -rf remont/.gitignore
+        rm -rf remont/icon
+        
+    - name: Deploy on GitHub Pages
+      if: github.ref == 'refs/heads/main'
+      uses: alex-page/blazing-fast-gh-pages-deploy@v1.1.0
       with:
-        folder: 'remont/market/-' #FIXME path to build app
+        repo-token: ${{ secrets.GH_PAT }}
+        site-directory: remont
+  
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+    - env:
+        GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+        INPUTS_CLIENT_PAYLOAD: '{"repository":${{ toJson(github.event.repository.name) }}}'
+        INPUTS_EVENT_TYPE: dependency_changed
+        INPUTS_REPOSITORY: ${{ matrix.repo }}
+      uses: rekgrpth/github-repository-dispatch-shell-action@v1
+    strategy:
+      matrix:
+        repo:
+          - lyumih/remont

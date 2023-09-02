@@ -1,12 +1,5 @@
 $remont_market $mol_page
-	title \Строительный маркетплейс
+	title \Поиск товаров в магазинах
 	body /
-		<= Search_form $mol_form 
-			form_fields /
-				<= Search_field $mol_form_field
-					name \Поиск товара
-					control <= Search_control $mol_string
-						value? <=> search? \
-		<= Ozon $mol_text text \Ozon
-		<= Ya_market $mol_text text \Яндекс.Маркет
-		<= WB $mol_text text \WB
+		<= Shops $remont_market_shops
+		<= Find $hyoo_search_app
