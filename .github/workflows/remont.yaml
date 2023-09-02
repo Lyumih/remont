@@ -16,9 +16,10 @@ jobs:
     
     - uses: hyoo-ru/mam_build@master2
       with:
-        package: 'remont/master'
+        package: 'remont'
+		modules: 'market'
     
     - uses: JamesIves/github-pages-deploy-action@4.1.7
       with:
         branch: gh-pages
-        folder: 'remont/master/abc/-'
+        folder: 'remont/market/-'
