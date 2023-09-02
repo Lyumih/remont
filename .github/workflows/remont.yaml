@@ -16,9 +16,9 @@ jobs:
     
     - uses: hyoo-ru/mam_build@master2
       with:
-        package: 'lyumih/remont/market'
+        package: 'remont/market'
     
     - uses: JamesIves/github-pages-deploy-action@4.1.7
       with:
         branch: gh-pages
-        folder: 'lyumih/remont/market/-'
+        folder: 'remont/market/-'
