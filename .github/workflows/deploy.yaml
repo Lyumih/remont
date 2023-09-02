@@ -1,10 +1,8 @@
-name: Deploy
+name: $remont
 
 on:
   workflow_dispatch:
   push:
-    branches: 
-    - main
   pull_request:
   schedule:
   - cron: "0 7 * * *"
@@ -16,40 +14,11 @@ jobs:
     
     steps:
     
-    - name: Environment Printer
-      uses: managedkaos/print-env@v1.0
+    - uses: hyoo-ru/mam_build@master2
+      with:
+        package: 'remont'
     
-    - name: Build apps
-      uses: hyoo-ru/mam_build@master2
+    - uses: JamesIves/github-pages-deploy-action@4.1.7
       with:
-        token: ${{ secrets.GH_PAT }}
-        package: remont
-        modules: market
-        
-    - name: Consolidate apps
-      run: |
-        rm -rf remont/.git
-        rm -rf remont/.github
-        rm -rf remont/.gitignore
-        rm -rf remont/icon
-        
-    - name: Deploy on GitHub Pages
-      if: github.ref == 'refs/heads/main'
-      uses: alex-page/blazing-fast-gh-pages-deploy@v1.1.0
-      with:
-        repo-token: ${{ secrets.GH_PAT }}
-        site-directory: remont
-  
-  notify:
-    runs-on: ubuntu-latest
-    steps:
-    - env:
-        GITHUB_TOKEN: ${{ secrets.GH_PAT }}
-        INPUTS_CLIENT_PAYLOAD: '{"repository":${{ toJson(github.event.repository.name) }}}'
-        INPUTS_EVENT_TYPE: dependency_changed
-        INPUTS_REPOSITORY: ${{ matrix.repo }}
-      uses: rekgrpth/github-repository-dispatch-shell-action@v1
-    strategy:
-      matrix:
-        repo:
-          - lyumih/remont
+        branch: gh-pages
+        folder: 'dark/-'
