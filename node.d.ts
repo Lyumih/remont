@@ -2078,6 +2078,20 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    class $mol_icon_github_circle extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_link_source extends $mol_link {
+        hint(): string;
+        sub(): readonly any[];
+        Icon(): $mol_icon_github_circle;
+    }
+}
+
+declare namespace $ {
     class $mol_image extends $mol_view {
         dom_name(): string;
         field(): Record<string, any>;
@@ -2377,20 +2391,6 @@ declare namespace $ {
 declare namespace $.$$ {
     class $mol_lights_toggle extends $.$mol_lights_toggle {
         lights(next?: boolean): boolean;
-    }
-}
-
-declare namespace $ {
-    class $mol_icon_github_circle extends $mol_icon {
-        path(): string;
-    }
-}
-
-declare namespace $ {
-    class $mol_link_source extends $mol_link {
-        hint(): string;
-        sub(): readonly any[];
-        Icon(): $mol_icon_github_circle;
     }
 }
 
@@ -3438,7 +3438,9 @@ declare namespace $ {
         title(): string;
         param(): string;
         menu_title(): string;
+        menu_tools(): readonly any[];
         spreads(): Record<string, any>;
+        GitHub(): $mol_link_source;
         Market(): $remont_market;
         Steps(): $mol_page;
         Tools(): $mol_page;
