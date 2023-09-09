@@ -10,7 +10,7 @@ $remont_app $mol_book2_catalog
 	menu_foot /
 		<= Thanks $mol_link_iconed
 			uri \https://thanks.hyoo.ru/
-			title \Поблагодарить
+			title \Поблагодарить (beta)
 	spreads *
 		market <= Market $remont_market
 		steps <= Steps $mol_page
