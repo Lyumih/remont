@@ -3,7 +3,14 @@ $remont_app $mol_book2_catalog
 	param \Menu
 	menu_title \Мой ремонт
 	menu_tools /
+		<= Telegram $mol_link_iconed
+			uri \https://t.me/h_y_o_o/417
+			title null
 		<= GitHub $mol_link_source uri \https://github.com/Lyumih/remont
+	menu_foot /
+		<= Thanks $mol_link_iconed
+			uri \https://thanks.hyoo.ru/
+			title \Поблагодарить
 	spreads *
 		market <= Market $remont_market
 		steps <= Steps $mol_page
@@ -18,5 +25,3 @@ $remont_app $mol_book2_catalog
 			title \To do (в разработке)
 		calculator <= Calculator $mol_page
 			title \Калькулятор (в разработке)
-		thanks <= Thanks $mol_page
-			title \Благодарность (в разработке)
