@@ -10919,7 +10919,7 @@ var $;
         Thanks() {
             const obj = new this.$.$mol_link_iconed();
             obj.uri = () => "https://thanks.hyoo.ru/";
-            obj.title = () => "Поблагодарить";
+            obj.title = () => "Поблагодарить (beta)";
             return obj;
         }
         Market() {
