@@ -8,30 +8,6 @@ $mol_scroll $mol_view
 		^
 		scroll?event <=> event_scroll?event null
 
-$mol_page $mol_view
-	dom_name \article
-	field *
-		^
-		tabIndex <= tabindex -1
-	sub /
-		<= Head $mol_view
-			minimal_height 64
-			dom_name \header
-			sub <= head /
-				<= Title $mol_view
-					dom_name \h1
-					sub <= title_content /
-						<= Logo null
-						<= title
-				<= Tools $mol_view
-					sub <= tools /$mol_view_content
-		<= Body $mol_scroll
-			scroll_top? => body_scroll_top?
-			sub <= body /$mol_view_content
-		<= Foot $mol_view
-			dom_name \footer
-			sub <= foot /$mol_view
-
 $mol_book2 $mol_scroll
 	menu_title \
 	sub <= pages /$mol_view
@@ -55,36 +31,6 @@ $mol_link $mol_view
 	event *
 		^
 		click?event <=> click?event <=> event_click?event null
-
-$mol_image $mol_view
-	dom_name \img
-	field *
-		^
-		src <= uri \
-		alt <= title
-		loading <= loading \eager
-		decoding <= decoding \async
-		crossOrigin <= cors null
-	attr *
-		^
-		width <= natural_width? 0
-		height <= natural_height? 0
-	event *
-		load? <=> load? null
-	minimal_width 16
-	minimal_height 16
-
-$mol_link_iconed $mol_link
-	sub /
-		<= Icon $mol_image
-			uri <= icon \
-			title \
-	content /
-		<= title <= uri
-	host \
-
-$mol_theme_auto $mol_plugin
-	attr * mol_theme <= theme \
 
 $mol_pop $mol_view
 	showed? false
@@ -305,6 +251,95 @@ $mol_search $mol_pop
 			<= Suggest_label* $mol_dimmer
 				haystack <= suggest_label* \
 				needle <= query? \
+
+$mol_page $mol_view
+	dom_name \article
+	field *
+		^
+		tabIndex <= tabindex -1
+	sub /
+		<= Head $mol_view
+			minimal_height 64
+			dom_name \header
+			sub <= head /
+				<= Title $mol_view
+					dom_name \h1
+					sub <= title_content /
+						<= Logo null
+						<= title
+				<= Tools $mol_view
+					sub <= tools /$mol_view_content
+		<= Body $mol_scroll
+			scroll_top? => body_scroll_top?
+			sub <= body /$mol_view_content
+		<= Foot $mol_view
+			dom_name \footer
+			sub <= foot /$mol_view
+
+$mol_book2_catalog $mol_book2
+	param \
+	spread? \
+	spreads *
+	Spread* $mol_view
+	Spread_default null
+	spread_ids /string
+	menu_filter_enabled false
+	spread_ids_filtered /string
+	pages /
+		<= Menu $mol_page
+			Title => Menu_title
+			title <= menu_title \
+			Tools => Menu_tools
+			tools <= menu_tools /
+			head <= menu_head /
+				<= Menu_title
+				<= Menu_tools
+			body <= menu_body /
+				<= Menu_filter $mol_search
+					query? <=> menu_filter? \
+				<= Menu_links $mol_list
+					rows <= menu_links /
+						<= Menu_link*0 $mol_link
+							arg <= arg* *
+							sub <= menu_link_content* /
+								<= Menu_link_title* $mol_dimmer
+									needle <= menu_filter
+									haystack <= spread_title* \
+			foot <= menu_foot /
+	Spread_close $mol_link
+		arg <= spread_close_arg *
+		sub /
+			<= Spread_close_icon $mol_icon_cross
+
+$mol_image $mol_view
+	dom_name \img
+	field *
+		^
+		src <= uri \
+		alt <= title
+		loading <= loading \eager
+		decoding <= decoding \async
+		crossOrigin <= cors null
+	attr *
+		^
+		width <= natural_width? 0
+		height <= natural_height? 0
+	event *
+		load? <=> load? null
+	minimal_width 16
+	minimal_height 16
+
+$mol_link_iconed $mol_link
+	sub /
+		<= Icon $mol_image
+			uri <= icon \
+			title \
+	content /
+		<= title <= uri
+	host \
+
+$mol_theme_auto $mol_plugin
+	attr * mol_theme <= theme \
 
 $mol_icon_bullseye $mol_icon path \M12,2C6.48,2 2,6.48 2,12C2,17.52 6.48,22 12,22C17.52,22 22,17.52 22,12C22,6.48 17.52,2 12,2M12,4C16.42,4 20,7.58 20,12C20,16.42 16.42,20 12,20C7.58,20 4,16.42 4,12C4,7.58 7.58,4 12,4M12,6C8.69,6 6,8.69 6,12C6,15.31 8.69,18 12,18C15.31,18 18,15.31 18,12C18,8.69 15.31,6 12,6M12,8C14.21,8 16,9.79 16,12C16,14.21 14.21,16 12,16C9.79,16 8,14.21 8,12C8,9.79 9.79,8 12,8M12,10C10.9,10 10,10.9 10,12C10,13.1 10.9,14 12,14C13.1,14 14,13.1 14,12C14,10.9 13.1,10 12,10Z
 
@@ -793,7 +828,7 @@ $hyoo_search_app $mol_book2
 	
 
 $remont_market $mol_page
-	title \Поиск товара v1
+	title \Поиск товара
 	body /
 		<= Find $hyoo_search_app
 			searchers \
@@ -808,3 +843,24 @@ $remont_market $mol_page
 				\https://www.mvideo.ru/product-list-page?q=
 				\https://www.dns-shop.ru/search/?q=
 				\https://www.tula.bestmebelshop.ru/search/index.php?q=
+
+$remont_app $mol_book2_catalog
+	title \Мой ремонт
+	param \Menu
+	menu_title \Мой ремонт
+	spreads *
+		market <= Market $remont_market
+		steps <= Steps $mol_page
+			title \Первые шаги (В разработке)
+		tools <= Tools $mol_page
+			title \Инструменты (В разработке)
+		rooms <= Rooms $mol_page
+			title \Комнаты (В разработке)
+		likes <= Likes $mol_page
+			title \Понравилось (в разработке)
+		todos <= Todos $mol_page
+			title \To do (в разработке)
+		calculator <= Calculator $mol_page
+			title \Калькулятор (в разработке)
+		thanks <= Thanks $mol_page
+			title \Благодарность (в разработке)
