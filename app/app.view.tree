@@ -6,11 +6,15 @@ $remont_app $mol_book2_catalog
 		market <= Market $remont_market
 		steps <= Steps $mol_page
 			title \Первые шаги (В разработке)
-		steps <= Steps $mol_page
-			title \Первые шаги (В разработке)
 		tools <= Tools $mol_page
 			title \Инструменты (В разработке)
 		rooms <= Rooms $mol_page
 			title \Комнаты (В разработке)
 		likes <= Likes $mol_page
 			title \Понравилось (в разработке)
+		todos <= Todos $mol_page
+			title \To do (в разработке)
+		calculator <= Calculator $mol_page
+			title \Калькулятор (в разработке)
+		thanks <= Thanks $mol_page
+			title \Благодарность (в разработке)
