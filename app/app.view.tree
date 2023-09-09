@@ -2,6 +2,8 @@ $remont_app $mol_book2_catalog
 	title \Мой ремонт
 	param \Menu
 	menu_title \Мой ремонт
+	menu_tools /
+		<= GitHub $mol_link_source uri \https://github.com/Lyumih/remont
 	spreads *
 		market <= Market $remont_market
 		steps <= Steps $mol_page
