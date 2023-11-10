@@ -573,6 +573,7 @@ $mol_textarea $mol_stack
 		graveAccent \́
 		forwardSlash \÷
 		E \€
+		V \✔
 		X \×
 		C \©
 		P \§
@@ -587,6 +588,8 @@ $mol_textarea $mol_stack
 		bracketOpen \[
 		bracketClose \]
 		slashBack \|
+	symbols_alt_ctrl *
+		space \ 
 	symbols_alt_shift *
 		V \✅
 		X \❌
