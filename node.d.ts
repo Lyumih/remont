@@ -2915,7 +2915,8 @@ declare namespace $ {
         Type(): $$.$mol_select;
         Settings_open_icon(): $mol_icon_settings;
         Settings_open(): $$.$mol_link;
-        Error(): any;
+        error(): any;
+        Error(): $mol_view;
         result_list(): readonly any[];
         result_list_empty(): string;
         Result_list_empty(): $mol_view;
@@ -2923,6 +2924,7 @@ declare namespace $ {
         Attribution(): $mol_view;
         Attribution_loader(): $mol_view;
         main_content(): readonly any[];
+        Content(): $mol_view;
         searcher_links(): readonly any[];
         Main(): $mol_page;
         Donate_icon(): $mol_icon_gift_outline;
@@ -3271,7 +3273,7 @@ declare namespace $.$$ {
         pages(): ($mol_view | $mol_page)[];
         title(): string;
         main_content(): readonly any[];
-        Error(): Element | null;
+        error(): Element | null;
         api(): {
             type: () => "image" | "web";
             backend: () => $hyoo_search_api_external;
