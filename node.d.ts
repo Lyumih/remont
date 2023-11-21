@@ -1362,7 +1362,7 @@ declare namespace $ {
 declare namespace $.$$ {
     class $mol_hotkey extends $.$mol_hotkey {
         key(): {
-            [x: number]: ((event: KeyboardEvent) => void) | undefined;
+            readonly [x: number]: ((event: KeyboardEvent) => void) | undefined;
             readonly backspace?: ((event: KeyboardEvent) => void) | undefined;
             readonly tab?: ((event: KeyboardEvent) => void) | undefined;
             readonly enter?: ((event: KeyboardEvent) => void) | undefined;
@@ -3128,9 +3128,7 @@ declare namespace $ {
                 content?: string | undefined;
                 contentNoFormatting?: string | undefined;
                 richSnippet?: Readonly<{
-                    metatags?: {
-                        [x: string]: string;
-                    } | undefined;
+                    metatags?: Readonly<Record<string, string>> | undefined;
                 }> | undefined;
                 thumbnailImage?: Readonly<{
                     width: string;
@@ -3152,9 +3150,7 @@ declare namespace $ {
                     content?: string | undefined;
                     contentNoFormatting?: string | undefined;
                     richSnippet?: Readonly<{
-                        metatags?: {
-                            [x: string]: string;
-                        } | undefined;
+                        metatags?: Readonly<Record<string, string>> | undefined;
                     }> | undefined;
                     thumbnailImage?: Readonly<{
                         width: string;
@@ -3175,9 +3171,7 @@ declare namespace $ {
                     content?: string | undefined;
                     contentNoFormatting?: string | undefined;
                     richSnippet?: Readonly<{
-                        metatags?: {
-                            [x: string]: string;
-                        } | undefined;
+                        metatags?: Readonly<Record<string, string>> | undefined;
                     }> | undefined;
                     thumbnailImage?: Readonly<{
                         width: string;
@@ -3202,9 +3196,7 @@ declare namespace $ {
             content?: string | undefined;
             contentNoFormatting?: string | undefined;
             richSnippet?: Readonly<{
-                metatags?: {
-                    [x: string]: string;
-                } | undefined;
+                metatags?: Readonly<Record<string, string>> | undefined;
             }> | undefined;
             thumbnailImage?: Readonly<{
                 width: string;
@@ -3226,9 +3218,7 @@ declare namespace $ {
             content?: string | undefined;
             contentNoFormatting?: string | undefined;
             richSnippet?: Readonly<{
-                metatags?: {
-                    [x: string]: string;
-                } | undefined;
+                metatags?: Readonly<Record<string, string>> | undefined;
             }> | undefined;
             thumbnailImage?: Readonly<{
                 width: string;
@@ -3287,9 +3277,7 @@ declare namespace $.$$ {
                     content?: string | undefined;
                     contentNoFormatting?: string | undefined;
                     richSnippet?: Readonly<{
-                        metatags?: {
-                            [x: string]: string;
-                        } | undefined;
+                        metatags?: Readonly<Record<string, string>> | undefined;
                     }> | undefined;
                     thumbnailImage?: Readonly<{
                         width: string;
@@ -3311,9 +3299,7 @@ declare namespace $.$$ {
                         content?: string | undefined;
                         contentNoFormatting?: string | undefined;
                         richSnippet?: Readonly<{
-                            metatags?: {
-                                [x: string]: string;
-                            } | undefined;
+                            metatags?: Readonly<Record<string, string>> | undefined;
                         }> | undefined;
                         thumbnailImage?: Readonly<{
                             width: string;
@@ -3334,9 +3320,7 @@ declare namespace $.$$ {
                         content?: string | undefined;
                         contentNoFormatting?: string | undefined;
                         richSnippet?: Readonly<{
-                            metatags?: {
-                                [x: string]: string;
-                            } | undefined;
+                            metatags?: Readonly<Record<string, string>> | undefined;
                         }> | undefined;
                         thumbnailImage?: Readonly<{
                             width: string;
@@ -3361,9 +3345,7 @@ declare namespace $.$$ {
                 content?: string | undefined;
                 contentNoFormatting?: string | undefined;
                 richSnippet?: Readonly<{
-                    metatags?: {
-                        [x: string]: string;
-                    } | undefined;
+                    metatags?: Readonly<Record<string, string>> | undefined;
                 }> | undefined;
                 thumbnailImage?: Readonly<{
                     width: string;
@@ -3385,9 +3367,7 @@ declare namespace $.$$ {
                 content?: string | undefined;
                 contentNoFormatting?: string | undefined;
                 richSnippet?: Readonly<{
-                    metatags?: {
-                        [x: string]: string;
-                    } | undefined;
+                    metatags?: Readonly<Record<string, string>> | undefined;
                 }> | undefined;
                 thumbnailImage?: Readonly<{
                     width: string;
@@ -3416,9 +3396,7 @@ declare namespace $.$$ {
             content?: string | undefined;
             contentNoFormatting?: string | undefined;
             richSnippet?: Readonly<{
-                metatags?: {
-                    [x: string]: string;
-                } | undefined;
+                metatags?: Readonly<Record<string, string>> | undefined;
             }> | undefined;
             thumbnailImage?: Readonly<{
                 width: string;
