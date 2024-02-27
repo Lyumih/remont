@@ -6197,6 +6197,9 @@ var $;
 		Menu_tools(){
 			return (this.Menu().Tools());
 		}
+		Menu_logo(){
+			return null;
+		}
 		menu_head(){
 			return [(this.Menu_title()), (this.Menu_tools())];
 		}
@@ -6247,6 +6250,7 @@ var $;
 		Menu(){
 			const obj = new this.$.$mol_page();
 			(obj.title) = () => ((this.menu_title()));
+			(obj.Logo) = () => ((this.Menu_logo()));
 			(obj.tools) = () => ([...(this.menu_tools()), ...(this.addon_tools())]);
 			(obj.head) = () => ((this.menu_head()));
 			(obj.body) = () => ((this.menu_body()));
@@ -9555,12 +9559,14 @@ var $;
     class $mol_error_mix extends AggregateError {
         cause;
         name = $$.$mol_func_name(this.constructor).replace(/^\$/, '') + '_Error';
-        constructor(message, cause, ...errors) {
+        constructor(message, cause = {}, ...errors) {
             super(errors, message, { cause });
             this.cause = cause;
             const stack_get = Object.getOwnPropertyDescriptor(this, 'stack')?.get ?? (() => super.stack);
             Object.defineProperty(this, 'stack', {
-                get: () => stack_get.call(this) + '\n' + this.errors.map(e => e.stack.trim().replace(/at /gm, '   at ').replace(/^(?!    )(.*)/gm, '    at [$1] (#)')).join('\n')
+                get: () => stack_get.call(this) + '\n' + [JSON.stringify(this.cause, null, '  ') ?? 'no cause', ...this.errors.map(e => e.stack)].map(e => e.trim()
+                    .replace(/at /gm, '   at ')
+                    .replace(/^(?!    +at )(.*)/gm, '    at | $1 (#)')).join('\n')
             });
         }
     }
