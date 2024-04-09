@@ -9579,6 +9579,12 @@ var $;
                     .replace(/^(?!    +at )(.*)/gm, '    at | $1 (#)')).join('\n')
             });
         }
+        static [Symbol.toPrimitive]() {
+            return this.toString();
+        }
+        static toString() {
+            return $$.$mol_func_name(this);
+        }
         static make(...params) {
             return new this(...params);
         }
