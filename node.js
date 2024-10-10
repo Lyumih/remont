@@ -2118,19 +2118,30 @@ var $;
     $.$mol_run_error = $mol_run_error;
     const child_process = $node['child_process'];
     $.$mol_run_spawn = child_process.spawn.bind(child_process);
+    $.$mol_run_spawn_sync = child_process.spawnSync.bind(child_process);
     function $mol_run_async({ dir, timeout, command, env }) {
         const args_raw = typeof command === 'string' ? command.split(' ') : command;
         const [app, ...args] = args_raw;
-        this.$mol_log3_come({
-            place: '$mol_run_async',
-            dir: $node.path.relative('', dir),
-            message: 'Run',
-            command: args_raw.join(' '),
-        });
+        if (!env?.MOL_RUN_ASYNC) {
+            this.$mol_log3_come({
+                place: '$mol_run_sync',
+                message: 'Run',
+                command: args_raw.join(' '),
+                dir: $node.path.relative('', dir),
+            });
+            return this.$mol_run_spawn_sync(app, args, { shell: true, cwd: dir, env });
+        }
         const sub = this.$mol_run_spawn(app, args, {
             shell: true,
             cwd: dir,
             env
+        });
+        this.$mol_log3_come({
+            place: '$mol_run_async',
+            pid: sub.pid,
+            message: 'Run',
+            command: args_raw.join(' '),
+            dir: $node.path.relative('', dir),
         });
         let killed = false;
         let timer;
@@ -2167,6 +2178,14 @@ var $;
                     get stdout() { return Buffer.concat(std_data); },
                     get stderr() { return Buffer.concat(error_data); }
                 };
+                this.$mol_log3_done({
+                    place: '$mol_run_async',
+                    pid: sub.pid,
+                    message: 'Run',
+                    status,
+                    command: args_raw.join(' '),
+                    dir: $node.path.relative('', dir),
+                });
                 if (error || status || killed)
                     return fail(new $mol_run_error((res.stderr.toString() || res.stdout.toString() || 'Run error') + (killed ? ', timeout' : ''), { signal, timeout: killed }, ...error ? [error] : []));
                 done(res);
@@ -10447,9 +10466,6 @@ var $;
 
 ;
 "use strict";
-
-;
-"use strict";
 var $;
 (function ($) {
     var $$;
@@ -10795,6 +10811,9 @@ var $;
 (function ($) {
     $mol_style_attach("hyoo/search/app/app.view.css", "#recaptcha\\-wrapper {\n\tmargin: var(--mol_gap_block) !important;\n}\n\n#recaptcha\\-wrapper a,\n#recaptcha\\-wrapper .gs\\-captcha\\-info\\-link {\n\ttext-decoration: none;\n\tcolor: var(--mol_theme_control);\n}\n\n[hyoo_search_app_main] {\n\tflex: 1 0 40rem;\n}\n\n[hyoo_search_app_sideview] {\n\tflex: 10000 0 40rem;\n\tbox-shadow: 0 0 0 1px var(--mol_theme_line);\n\tz-index: 2;\n\tbackground: white;\n}\n\n[hyoo_search_app_content] {\n\tflex-direction: column;\n\tpadding: var(--mol_gap_block);\n}\n\n[hyoo_search_app_sideview_hint] {\n\tflex: 1 1 auto;\n\tpadding: 0 .25rem;\n\tfont-size: .75rem;\n\tjustify-content: center;\n}\n\n[hyoo_search_app_sideview_embed] {\n\tposition: absolute;\n\twidth: 100%;\n\theight: 100%;\n\tmax-height: 100%;\n\taspect-ratio: auto;\n\tborder-radius: 0;\n\tbackground: transparent;\n}\n\n[hyoo_search_app_settings] {\n\tflex: 0 0 25rem;\n}\n\n[hyoo_search_app_result_item] {\n\tpadding: 0;\n\tbackground: var(--mol_theme_card);\n}\n\n[hyoo_search_app_result_image] {\n\tflex: 1 0 6rem;\n\tmax-height: 6rem;\n\tobject-fit: scale-down;\n}\n\n[hyoo_search_app_result_info] {\n\tflex: 1 1 auto;\n\tflex-wrap: wrap;\n\talign-items: center;\n\talign-content: center;\n}\n\n[hyoo_search_app_result_main] {\n\tflex: 10000 1 14rem;\n}\n\n[hyoo_search_app_result_title] {\n\tcolor: var(--mol_theme_text);\n\ttext-shadow: 0 0;\n}\n\n[hyoo_search_app_result_descr] {\n\tcolor: var(--mol_theme_text);\n}\n\n[hyoo_search_app_main_tools] {\n\tflex-grow: 0;\n}\n\n[hyoo_search_app_result_title_low] {\n\topacity: 1;\n}\n\n[hyoo_search_app_result_descr_low] {\n\topacity: 1;\n}\n\n[hyoo_search_app_result_host_low] {\n\topacity: 1;\n}\n\n[hyoo_search_app_result_list] {\n\tgap: var(--mol_gap_block);\n}\n\n[hyoo_search_app_result_list_empty] {\n\tpadding: var(--mol_gap_text);\n}\n\n[hyoo_search_app_attribution] {\n\tpadding: var(--mol_gap_text);\n}\n\n[hyoo_search_app_result_ban_option_label] {\n\ttext-align: right;\n}\n");
 })($ || ($ = {}));
+
+;
+"use strict";
 
 ;
 	($.$remont_market) = class $remont_market extends ($.$mol_page) {
