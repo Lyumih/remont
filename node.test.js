@@ -2647,6 +2647,38 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    class $mol_promise extends Promise {
+        done;
+        fail;
+        constructor(executor) {
+            let done;
+            let fail;
+            super((d, f) => {
+                done = d;
+                fail = f;
+                executor?.(d, f);
+            });
+            this.done = done;
+            this.fail = fail;
+        }
+    }
+    $.$mol_promise = $mol_promise;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_promise_blocker extends $mol_promise {
+        static [Symbol.toStringTag] = '$mol_promise_blocker';
+    }
+    $.$mol_promise_blocker = $mol_promise_blocker;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
     class $mol_decor {
         value;
         constructor(value) {
@@ -3166,9 +3198,14 @@ var $;
             return $mol_dev_format_span({}, $mol_dev_format_native(this));
         }
         *view_find(check, path = []) {
-            if (check(this))
-                return yield [...path, this];
+            if (path.length === 0 && check(this))
+                return yield [this];
             try {
+                for (const item of this.sub()) {
+                    if (item instanceof $mol_view && check(item)) {
+                        return yield [...path, this, item];
+                    }
+                }
                 for (const item of this.sub()) {
                     if (item instanceof $mol_view) {
                         yield* item.view_find(check, [...path, this]);
@@ -3293,7 +3330,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $mol_style_attach("mol/view/view/view.css", "[mol_view] {\n\ttransition-property: height, width, min-height, min-width, max-width, max-height, transform;\n\ttransition-duration: .2s;\n\ttransition-timing-function: ease-out;\n\t-webkit-appearance: none;\n\tbox-sizing: border-box;\n\tdisplay: flex;\n\tflex-shrink: 0;\n\tcontain: style;\n\tscrollbar-color: var(--mol_theme_line) transparent;\n\tscrollbar-width: thin;\n}\t\n\n[mol_view]::selection {\n\tbackground: var(--mol_theme_line);\n}\t\n\n[mol_view]::-webkit-scrollbar {\n\twidth: .25rem;\n\theight: .25rem;\n}\n\n[mol_view]::-webkit-scrollbar-corner {\n\tbackground-color: var(--mol_theme_line);\n}\n\n[mol_view]::-webkit-scrollbar-track {\n\tbackground-color: transparent;\n}\n\n[mol_view]::-webkit-scrollbar-thumb {\n\tbackground-color: var(--mol_theme_line);\n\tborder-radius: var(--mol_gap_round);\n}\n\n[mol_view] > * {\n\tword-break: inherit;\n}\n\n[mol_view_root] {\n\tmargin: 0;\n\tpadding: 0;\n\twidth: 100%;\n\theight: 100%;\n\tbox-sizing: border-box;\n\tfont-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n\tfont-size: 1rem;\n\tline-height: 1.5rem;\n\tbackground: var(--mol_theme_back);\n\tcolor: var(--mol_theme_text);\n\tcontain: unset; /** Fixes bg ignoring when applied to body on Chrome */\n\ttab-size: 4;\n\toverscroll-behavior: contain; /** Disable navigation gestures **/\n}\n\n@media print {\n\t[mol_view_root] {\n\t\theight: auto;\n\t}\n}\n\n[mol_view][mol_view_error]:not([mol_view_error=\"Promise\"]) {\n\tbackground-image: repeating-linear-gradient(\n\t\t-45deg,\n\t\t#f92323,\n\t\t#f92323 .5rem,\n\t\t#ff3d3d .5rem,\n\t\t#ff3d3d 1.5rem\n\t);\n\tcolor: black;\n\talign-items: center;\n\tjustify-content: center;\n}\n\n@keyframes mol_view_wait {\n\tfrom {\n\t\topacity: .25;\n\t}\n\t20% {\n\t\topacity: .75;\n\t}\n\tto {\n\t\topacity: .25;\n\t}\n}\n\n:where([mol_view][mol_view_error=\"Promise\"]) {\n\tbackground: var(--mol_theme_hover);\n}\n\n[mol_view][mol_view_error=\"Promise\"] {\n\tanimation: mol_view_wait 1s steps(20,end) infinite;\n}\n");
+    $mol_style_attach("mol/view/view/view.css", "[mol_view] {\n\ttransition-property: height, width, min-height, min-width, max-width, max-height, transform;\n\ttransition-duration: .2s;\n\ttransition-timing-function: ease-out;\n\t-webkit-appearance: none;\n\tbox-sizing: border-box;\n\tdisplay: flex;\n\tflex-shrink: 0;\n\tcontain: style;\n\tscrollbar-color: var(--mol_theme_line) transparent;\n\tscrollbar-width: thin;\n}\t\n\n[mol_view]::selection {\n\tbackground: var(--mol_theme_line);\n}\t\n\n[mol_view]::-webkit-scrollbar {\n\twidth: .25rem;\n\theight: .25rem;\n}\n\n[mol_view]::-webkit-scrollbar-corner {\n\tbackground-color: var(--mol_theme_line);\n}\n\n[mol_view]::-webkit-scrollbar-track {\n\tbackground-color: transparent;\n}\n\n[mol_view]::-webkit-scrollbar-thumb {\n\tbackground-color: var(--mol_theme_line);\n\tborder-radius: var(--mol_gap_round);\n}\n\n[mol_view] > * {\n\tword-break: inherit;\n}\n\n[mol_view_root] {\n\tmargin: 0;\n\tpadding: 0;\n\twidth: 100%;\n\theight: 100%;\n\tbox-sizing: border-box;\n\tfont-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n\tfont-size: 1rem;\n\tline-height: 1.5rem;\n\tbackground: var(--mol_theme_back);\n\tcolor: var(--mol_theme_text);\n\tcontain: unset; /** Fixes bg ignoring when applied to body on Chrome */\n\ttab-size: 4;\n\toverscroll-behavior: contain; /** Disable navigation gestures **/\n}\n\n@media print {\n\t[mol_view_root] {\n\t\theight: auto;\n\t}\n}\n[mol_view][mol_view_error]:not([mol_view_error=\"Promise\"], [mol_view_error=\"$mol_promise_blocker\"]) {\n\tbackground-image: repeating-linear-gradient(\n\t\t-45deg,\n\t\t#f92323,\n\t\t#f92323 .5rem,\n\t\t#ff3d3d .5rem,\n\t\t#ff3d3d 1.5rem\n\t);\n\tcolor: black;\n\talign-items: center;\n\tjustify-content: center;\n}\n\n@keyframes mol_view_wait {\n\tfrom {\n\t\topacity: .25;\n\t}\n\t20% {\n\t\topacity: .75;\n\t}\n\tto {\n\t\topacity: .25;\n\t}\n}\n\n:where([mol_view][mol_view_error=\"$mol_promise_blocker\"]),\n:where([mol_view][mol_view_error=\"Promise\"]) {\n\tbackground: var(--mol_theme_hover);\n}\n\n[mol_view][mol_view_error=\"Promise\"] {\n\tanimation: mol_view_wait 1s steps(20,end) infinite;\n}\n");
 })($ || ($ = {}));
 
 ;
@@ -3328,8 +3365,8 @@ var $;
 			if(next !== undefined) return next;
 			return 0;
 		}
-		field(){
-			return {...(super.field()), "tabIndex": (this.tabindex())};
+		attr(){
+			return {...(super.attr()), "tabindex": (this.tabindex())};
 		}
 		event(){
 			return {...(super.event()), "scroll": (next) => (this.event_scroll(next))};
@@ -5295,7 +5332,7 @@ var $;
             event_change(next) {
                 if (!next)
                     return;
-                const el = next.target;
+                const el = this.dom_node();
                 const from = el.selectionStart;
                 const to = el.selectionEnd;
                 try {
@@ -7352,8 +7389,11 @@ var $;
     var $$;
     (function ($$) {
         class $mol_book2_catalog extends $.$mol_book2_catalog {
+            spread_current() {
+                return this.spread() === '' ? this.Spread_default() : this.Spread(this.spread());
+            }
             pages() {
-                const spread = this.spread() === '' ? this.Spread_default() : this.Spread(this.spread());
+                const spread = this.spread_current();
                 return [
                     this.Menu(),
                     ...spread
@@ -7362,6 +7402,11 @@ var $;
                             : [spread]
                         : [],
                 ];
+            }
+            auto() {
+                const spread = this.spread_current();
+                if (spread instanceof $mol_book2)
+                    spread.auto();
             }
             spread_ids() {
                 return Object.keys(this.spreads());
@@ -8505,6 +8550,39 @@ var $;
 })($ || ($ = {}));
 
 ;
+	($.$mol_icon_information) = class $mol_icon_information extends ($.$mol_icon) {
+		path(){
+			return "M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z";
+		}
+	};
+
+
+;
+"use strict";
+
+;
+	($.$mol_icon_information_slab_circle) = class $mol_icon_information_slab_circle extends ($.$mol_icon) {
+		path(){
+			return "M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22M11 7H13V9H11V7M14 17H10V15H11V13H10V11H13V15H14V17Z";
+		}
+	};
+
+
+;
+"use strict";
+
+;
+	($.$mol_icon_information_slab_circle_outline) = class $mol_icon_information_slab_circle_outline extends ($.$mol_icon) {
+		path(){
+			return "M11 7V9H13V7H11M14 17V15H13V11H10V13H11V15H10V17H14M22 12C22 17.5 17.5 22 12 22C6.5 22 2 17.5 2 12C2 6.5 6.5 2 12 2C17.5 2 22 6.5 22 12M20 12C20 7.58 16.42 4 12 4C7.58 4 4 7.58 4 12C4 16.42 7.58 20 12 20C16.42 20 20 16.42 20 12Z";
+		}
+	};
+
+
+;
+"use strict";
+
+;
 	($.$mol_stack) = class $mol_stack extends ($.$mol_view) {};
 
 
@@ -8762,7 +8840,7 @@ var $;
         'code-keyword': /\b(throw|readonly|unknown|keyof|typeof|never|from|class|struct|interface|type|function|extends|implements|module|namespace|import|export|include|require|var|val|let|const|for|do|while|until|in|out|of|new|if|then|else|switch|case|this|return|async|await|yield|try|catch|break|continue|get|set|public|private|protected|string|boolean|number|null|undefined|true|false|void|int|float|ref)\b/,
         'code-global': /[$]+\w*|\b[A-Z][a-z0-9]+[A-Z]\w*/,
         'code-word': /\w+/,
-        'code-decorator': /@.+/,
+        'code-decorator': /@\s*\S+/,
         'code-tag': /<\/?[\w-]+\/?>?|&\w+;/,
         'code-punctuation': /[\-\[\]\{\}\(\)<=>~!\?@#%&\*_\+\\\/\|;:\.,\^]+?/,
     });
@@ -9650,27 +9728,8 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    function $mol_promise() {
-        let done;
-        let fail;
-        const promise = new Promise((d, f) => {
-            done = d;
-            fail = f;
-        });
-        return Object.assign(promise, {
-            done,
-            fail,
-        });
-    }
-    $.$mol_promise = $mol_promise;
-})($ || ($ = {}));
-
-;
-"use strict";
-var $;
-(function ($) {
     function $mol_wait_timeout_async(timeout) {
-        const promise = $mol_promise();
+        const promise = new $mol_promise();
         const task = new this.$mol_after_timeout(timeout, () => promise.done());
         return Object.assign(promise, {
             destructor: () => task.destructor()
@@ -10112,6 +10171,17 @@ var $;
 			const obj = new this.$.$mol_lights_toggle();
 			return obj;
 		}
+		Info_icon(){
+			const obj = new this.$.$mol_icon_information_slab_circle_outline();
+			return obj;
+		}
+		Info(){
+			const obj = new this.$.$mol_link();
+			(obj.hint) = () => ((this.$.$mol_locale.text("$hyoo_search_app_Info_hint")));
+			(obj.uri) = () => ("https://page.hyoo.ru/#!=o9jnhf_7v21c4");
+			(obj.sub) = () => ([(this.Info_icon())]);
+			return obj;
+		}
 		Sources(){
 			const obj = new this.$.$mol_link_source();
 			(obj.uri) = () => ("https://github.com/hyoo-ru/search.hyoo.ru");
@@ -10188,6 +10258,7 @@ var $;
 			(obj.tools) = () => ([
 				(this.Donate()), 
 				(this.Lights()), 
+				(this.Info()), 
 				(this.Sources()), 
 				(this.Settings_close())
 			]);
@@ -10385,6 +10456,8 @@ var $;
 	($mol_mem(($.$hyoo_search_app.prototype), "Donate_icon"));
 	($mol_mem(($.$hyoo_search_app.prototype), "Donate"));
 	($mol_mem(($.$hyoo_search_app.prototype), "Lights"));
+	($mol_mem(($.$hyoo_search_app.prototype), "Info_icon"));
+	($mol_mem(($.$hyoo_search_app.prototype), "Info"));
 	($mol_mem(($.$hyoo_search_app.prototype), "Sources"));
 	($mol_mem(($.$hyoo_search_app.prototype), "Settings_close_icon"));
 	($mol_mem(($.$hyoo_search_app.prototype), "Settings_close"));
@@ -10827,7 +10900,7 @@ var $;
         }
         future(query) {
             $mol_wire_solid();
-            const promise = $mol_promise();
+            const promise = new $mol_promise();
             return { promise };
         }
         async execute_async(query) {
@@ -11085,8 +11158,8 @@ var $;
                 all.sort((a, b) => words.get(b) - words.get(a));
                 return all;
             }
-            exclude_badge_title(index) {
-                return '-' + this.exclude()[index];
+            exclude_badge_title(word) {
+                return '-' + word;
             }
             result_ban_options(index) {
                 const names = this.result_host(index).split('.');

@@ -537,8 +537,8 @@ declare namespace $ {
         dir: string;
     }> {
     }
-    const $mol_run_spawn: (command: string, args: readonly string[], options: import("child_process").SpawnOptions) => import("child_process").ChildProcess;
-    const $mol_run_spawn_sync: (command: string, args?: readonly string[] | undefined, options?: import("child_process").SpawnSyncOptions | undefined) => import("child_process").SpawnSyncReturns<string | Buffer<ArrayBufferLike>>;
+    const $mol_run_spawn: (...args: Parameters<(typeof $node)["child_process"]["spawn"]>) => import("child_process").ChildProcess;
+    const $mol_run_spawn_sync: (...args: Parameters<(typeof $node)["child_process"]["spawnSync"]>) => import("child_process").SpawnSyncReturns<string | Buffer<ArrayBufferLike>>;
     type $mol_run_options = {
         command: readonly string[] | string;
         dir: string;
@@ -666,6 +666,20 @@ declare namespace $ {
 
 declare namespace $ {
     function $mol_style_attach(id: string, text: string): HTMLStyleElement | null;
+}
+
+declare namespace $ {
+    class $mol_promise<Result = void> extends Promise<Result> {
+        done: (value: Result | PromiseLike<Result>) => void;
+        fail: (reason?: any) => void;
+        constructor(executor?: (done: (value: Result | PromiseLike<Result>) => void, fail: (reason?: any) => void) => void);
+    }
+}
+
+declare namespace $ {
+    class $mol_promise_blocker<Result> extends $mol_promise<Result> {
+        static [Symbol.toStringTag]: string;
+    }
 }
 
 declare namespace $ {
@@ -1085,9 +1099,9 @@ declare namespace $ {
 		event_scroll( next?: any ): any
 		scroll_top( next?: number ): number
 		scroll_left( next?: number ): number
-		field( ): ({ 
-			'tabIndex': ReturnType< $mol_scroll['tabindex'] >,
-		})  & ReturnType< $mol_view['field'] >
+		attr( ): ({ 
+			'tabindex': ReturnType< $mol_scroll['tabindex'] >,
+		})  & ReturnType< $mol_view['attr'] >
 		event( ): ({ 
 			scroll( next?: ReturnType< $mol_scroll['event_scroll'] > ): ReturnType< $mol_scroll['event_scroll'] >,
 		})  & ReturnType< $mol_view['event'] >
@@ -2543,7 +2557,9 @@ declare namespace $ {
 //# sourceMappingURL=catalog.view.tree.d.ts.map
 declare namespace $.$$ {
     class $mol_book2_catalog extends $.$mol_book2_catalog {
+        spread_current(): any;
         pages(): any[];
+        auto(): void;
         spread_ids(): readonly string[];
         menu_body(): ($.$mol_list | $.$mol_search)[];
         menu_filter_enabled(): boolean;
@@ -3167,6 +3183,33 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
+
+	export class $mol_icon_information extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=information.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $mol_icon_information_slab_circle extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=circle.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $mol_icon_information_slab_circle_outline extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=outline.view.tree.d.ts.map
+declare namespace $ {
 }
 
 declare namespace $ {
@@ -3772,13 +3815,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    function $mol_promise<Result = void>(): Promise<Result> & {
-        done: (res: Result | PromiseLike<Result>) => void;
-        fail: (error?: any) => void;
-    };
-}
-
-declare namespace $ {
     function $mol_wait_timeout_async(this: $, timeout: number): Promise<void>;
     function $mol_wait_timeout(this: $, timeout: number): void;
 }
@@ -4052,7 +4088,7 @@ declare namespace $ {
         static error(next?: null | Element): Element | null;
         backend(): Promise<$hyoo_search_api_external>;
         future(query: string): {
-            promise: Promise<readonly Readonly<{
+            promise: $mol_promise<readonly Readonly<{
                 image?: Readonly<{
                     width: string;
                     height: string;
@@ -4073,52 +4109,7 @@ declare namespace $ {
                 title: string;
                 titleNoFormatting: string;
                 visibleUrl: string;
-            }>[]> & {
-                done: (res: readonly Readonly<{
-                    image?: Readonly<{
-                        width: string;
-                        height: string;
-                        url: string;
-                    }> | undefined;
-                    content?: string | undefined;
-                    contentNoFormatting?: string | undefined;
-                    richSnippet?: Readonly<{
-                        metatags?: Readonly<Record<string, string>> | undefined;
-                    }> | undefined;
-                    thumbnailImage?: Readonly<{
-                        width: string;
-                        height: string;
-                        url: string;
-                    }> | undefined;
-                    url?: string | undefined;
-                    contextUrl?: string | undefined;
-                    title: string;
-                    titleNoFormatting: string;
-                    visibleUrl: string;
-                }>[] | PromiseLike<readonly Readonly<{
-                    image?: Readonly<{
-                        width: string;
-                        height: string;
-                        url: string;
-                    }> | undefined;
-                    content?: string | undefined;
-                    contentNoFormatting?: string | undefined;
-                    richSnippet?: Readonly<{
-                        metatags?: Readonly<Record<string, string>> | undefined;
-                    }> | undefined;
-                    thumbnailImage?: Readonly<{
-                        width: string;
-                        height: string;
-                        url: string;
-                    }> | undefined;
-                    url?: string | undefined;
-                    contextUrl?: string | undefined;
-                    title: string;
-                    titleNoFormatting: string;
-                    visibleUrl: string;
-                }>[]>) => void;
-                fail: (error?: any) => void;
-            };
+            }>[]>;
         };
         execute_async(query: string): Promise<readonly Readonly<{
             image?: Readonly<{
@@ -4378,67 +4369,67 @@ declare namespace $ {
 		,
 		ReturnType< $mol_link['sub'] >
 	>
-	type $mol_link_source__uri_hyoo_search_app_39 = $mol_type_enforce<
+	type $mol_link__hint_hyoo_search_app_39 = $mol_type_enforce<
 		string
 		,
-		ReturnType< $mol_link_source['uri'] >
+		ReturnType< $mol_link['hint'] >
 	>
-	type $mol_link__arg_hyoo_search_app_40 = $mol_type_enforce<
-		({ 
-			'settings': any,
-		}) 
+	type $mol_link__uri_hyoo_search_app_40 = $mol_type_enforce<
+		string
 		,
-		ReturnType< $mol_link['arg'] >
+		ReturnType< $mol_link['uri'] >
 	>
 	type $mol_link__sub_hyoo_search_app_41 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_link['sub'] >
 	>
-	type $mol_textarea__hint_hyoo_search_app_42 = $mol_type_enforce<
+	type $mol_link_source__uri_hyoo_search_app_42 = $mol_type_enforce<
+		string
+		,
+		ReturnType< $mol_link_source['uri'] >
+	>
+	type $mol_link__arg_hyoo_search_app_43 = $mol_type_enforce<
+		({ 
+			'settings': any,
+		}) 
+		,
+		ReturnType< $mol_link['arg'] >
+	>
+	type $mol_link__sub_hyoo_search_app_44 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_link['sub'] >
+	>
+	type $mol_textarea__hint_hyoo_search_app_45 = $mol_type_enforce<
 		string
 		,
 		ReturnType< $mol_textarea['hint'] >
 	>
-	type $mol_textarea__value_hyoo_search_app_43 = $mol_type_enforce<
+	type $mol_textarea__value_hyoo_search_app_46 = $mol_type_enforce<
 		ReturnType< $hyoo_search_app['searchers'] >
 		,
 		ReturnType< $mol_textarea['value'] >
 	>
-	type $mol_form_field__name_hyoo_search_app_44 = $mol_type_enforce<
+	type $mol_form_field__name_hyoo_search_app_47 = $mol_type_enforce<
 		string
 		,
 		ReturnType< $mol_form_field['name'] >
 	>
-	type $mol_form_field__Content_hyoo_search_app_45 = $mol_type_enforce<
+	type $mol_form_field__Content_hyoo_search_app_48 = $mol_type_enforce<
 		ReturnType< $hyoo_search_app['Searchers'] >
 		,
 		ReturnType< $mol_form_field['Content'] >
 	>
-	type $mol_textarea__hint_hyoo_search_app_46 = $mol_type_enforce<
+	type $mol_textarea__hint_hyoo_search_app_49 = $mol_type_enforce<
 		string
 		,
 		ReturnType< $mol_textarea['hint'] >
 	>
-	type $mol_textarea__value_hyoo_search_app_47 = $mol_type_enforce<
+	type $mol_textarea__value_hyoo_search_app_50 = $mol_type_enforce<
 		ReturnType< $hyoo_search_app['blacklist'] >
 		,
 		ReturnType< $mol_textarea['value'] >
-	>
-	type $mol_form_field__name_hyoo_search_app_48 = $mol_type_enforce<
-		string
-		,
-		ReturnType< $mol_form_field['name'] >
-	>
-	type $mol_form_field__Content_hyoo_search_app_49 = $mol_type_enforce<
-		ReturnType< $hyoo_search_app['Blacklist'] >
-		,
-		ReturnType< $mol_form_field['Content'] >
-	>
-	type $mol_text_code__text_hyoo_search_app_50 = $mol_type_enforce<
-		ReturnType< $hyoo_search_app['query_dump'] >
-		,
-		ReturnType< $mol_text_code['text'] >
 	>
 	type $mol_form_field__name_hyoo_search_app_51 = $mol_type_enforce<
 		string
@@ -4446,147 +4437,144 @@ declare namespace $ {
 		ReturnType< $mol_form_field['name'] >
 	>
 	type $mol_form_field__Content_hyoo_search_app_52 = $mol_type_enforce<
+		ReturnType< $hyoo_search_app['Blacklist'] >
+		,
+		ReturnType< $mol_form_field['Content'] >
+	>
+	type $mol_text_code__text_hyoo_search_app_53 = $mol_type_enforce<
+		ReturnType< $hyoo_search_app['query_dump'] >
+		,
+		ReturnType< $mol_text_code['text'] >
+	>
+	type $mol_form_field__name_hyoo_search_app_54 = $mol_type_enforce<
+		string
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__Content_hyoo_search_app_55 = $mol_type_enforce<
 		ReturnType< $hyoo_search_app['Query_dump'] >
 		,
 		ReturnType< $mol_form_field['Content'] >
 	>
-	type $mol_list__rows_hyoo_search_app_53 = $mol_type_enforce<
+	type $mol_list__rows_hyoo_search_app_56 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_list['rows'] >
 	>
-	type $mol_page__title_hyoo_search_app_54 = $mol_type_enforce<
+	type $mol_page__title_hyoo_search_app_57 = $mol_type_enforce<
 		string
 		,
 		ReturnType< $mol_page['title'] >
 	>
-	type $mol_page__tools_hyoo_search_app_55 = $mol_type_enforce<
+	type $mol_page__tools_hyoo_search_app_58 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_page['tools'] >
 	>
-	type $mol_page__body_hyoo_search_app_56 = $mol_type_enforce<
+	type $mol_page__body_hyoo_search_app_59 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_page['body'] >
 	>
-	type $mol_paragraph__title_hyoo_search_app_57 = $mol_type_enforce<
+	type $mol_paragraph__title_hyoo_search_app_60 = $mol_type_enforce<
 		string
 		,
 		ReturnType< $mol_paragraph['title'] >
 	>
-	type $mol_embed_native__uri_hyoo_search_app_58 = $mol_type_enforce<
+	type $mol_embed_native__uri_hyoo_search_app_61 = $mol_type_enforce<
 		ReturnType< $hyoo_search_app['sideview'] >
 		,
 		ReturnType< $mol_embed_native['uri'] >
 	>
-	type $mol_embed_native__sub_hyoo_search_app_59 = $mol_type_enforce<
+	type $mol_embed_native__sub_hyoo_search_app_62 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_embed_native['sub'] >
 	>
-	type $mol_image__uri_hyoo_search_app_60 = $mol_type_enforce<
+	type $mol_image__uri_hyoo_search_app_63 = $mol_type_enforce<
 		ReturnType< $hyoo_search_app['result_image'] >
 		,
 		ReturnType< $mol_image['uri'] >
 	>
-	type $mol_image__title_hyoo_search_app_61 = $mol_type_enforce<
+	type $mol_image__title_hyoo_search_app_64 = $mol_type_enforce<
 		string
 		,
 		ReturnType< $mol_image['title'] >
 	>
-	type $mol_dimmer__haystack_hyoo_search_app_62 = $mol_type_enforce<
+	type $mol_dimmer__haystack_hyoo_search_app_65 = $mol_type_enforce<
 		ReturnType< $hyoo_search_app['result_title'] >
 		,
 		ReturnType< $mol_dimmer['haystack'] >
 	>
-	type $mol_dimmer__needle_hyoo_search_app_63 = $mol_type_enforce<
+	type $mol_dimmer__needle_hyoo_search_app_66 = $mol_type_enforce<
 		ReturnType< $hyoo_search_app['query'] >
 		,
 		ReturnType< $mol_dimmer['needle'] >
 	>
-	type $mol_dimmer__haystack_hyoo_search_app_64 = $mol_type_enforce<
+	type $mol_dimmer__haystack_hyoo_search_app_67 = $mol_type_enforce<
 		ReturnType< $hyoo_search_app['result_host'] >
 		,
 		ReturnType< $mol_dimmer['haystack'] >
 	>
-	type $mol_dimmer__needle_hyoo_search_app_65 = $mol_type_enforce<
+	type $mol_dimmer__needle_hyoo_search_app_68 = $mol_type_enforce<
 		ReturnType< $hyoo_search_app['query'] >
 		,
 		ReturnType< $mol_dimmer['needle'] >
 	>
-	type $mol_dimmer__haystack_hyoo_search_app_66 = $mol_type_enforce<
+	type $mol_dimmer__haystack_hyoo_search_app_69 = $mol_type_enforce<
 		ReturnType< $hyoo_search_app['result_descr'] >
 		,
 		ReturnType< $mol_dimmer['haystack'] >
 	>
-	type $mol_dimmer__needle_hyoo_search_app_67 = $mol_type_enforce<
+	type $mol_dimmer__needle_hyoo_search_app_70 = $mol_type_enforce<
 		ReturnType< $hyoo_search_app['query'] >
 		,
 		ReturnType< $mol_dimmer['needle'] >
 	>
-	type $mol_list__rows_hyoo_search_app_68 = $mol_type_enforce<
+	type $mol_list__rows_hyoo_search_app_71 = $mol_type_enforce<
 		ReturnType< $hyoo_search_app['result_main'] >
 		,
 		ReturnType< $mol_list['rows'] >
 	>
-	type $mol_row__sub_hyoo_search_app_69 = $mol_type_enforce<
+	type $mol_row__sub_hyoo_search_app_72 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_row['sub'] >
 	>
-	type $mol_select__Trigger_icon_hyoo_search_app_70 = $mol_type_enforce<
+	type $mol_select__Trigger_icon_hyoo_search_app_73 = $mol_type_enforce<
 		ReturnType< $hyoo_search_app['Result_ban_icon'] >
 		,
 		ReturnType< $mol_select['Trigger_icon'] >
 	>
-	type $mol_select__hint_hyoo_search_app_71 = $mol_type_enforce<
+	type $mol_select__hint_hyoo_search_app_74 = $mol_type_enforce<
 		string
 		,
 		ReturnType< $mol_select['hint'] >
 	>
-	type $mol_select__Filter_hyoo_search_app_72 = $mol_type_enforce<
+	type $mol_select__Filter_hyoo_search_app_75 = $mol_type_enforce<
 		any
 		,
 		ReturnType< $mol_select['Filter'] >
 	>
-	type $mol_select__align_hor_hyoo_search_app_73 = $mol_type_enforce<
+	type $mol_select__align_hor_hyoo_search_app_76 = $mol_type_enforce<
 		string
 		,
 		ReturnType< $mol_select['align_hor'] >
 	>
-	type $mol_select__options_hyoo_search_app_74 = $mol_type_enforce<
+	type $mol_select__options_hyoo_search_app_77 = $mol_type_enforce<
 		ReturnType< $hyoo_search_app['result_ban_options'] >
 		,
 		ReturnType< $mol_select['options'] >
 	>
-	type $mol_select__value_hyoo_search_app_75 = $mol_type_enforce<
+	type $mol_select__value_hyoo_search_app_78 = $mol_type_enforce<
 		ReturnType< $hyoo_search_app['result_ban'] >
 		,
 		ReturnType< $mol_select['value'] >
 	>
-	type $mol_link__uri_hyoo_search_app_76 = $mol_type_enforce<
+	type $mol_link__uri_hyoo_search_app_79 = $mol_type_enforce<
 		ReturnType< $hyoo_search_app['result_cache'] >
 		,
 		ReturnType< $mol_link['uri'] >
-	>
-	type $mol_link__hint_hyoo_search_app_77 = $mol_type_enforce<
-		string
-		,
-		ReturnType< $mol_link['hint'] >
-	>
-	type $mol_link__sub_hyoo_search_app_78 = $mol_type_enforce<
-		readonly(any)[]
-		,
-		ReturnType< $mol_link['sub'] >
-	>
-	type $mol_link__arg_hyoo_search_app_79 = $mol_type_enforce<
-		({ 
-			'settings': any,
-			'sideview': ReturnType< $hyoo_search_app['result_embed'] >,
-		}) 
-		,
-		ReturnType< $mol_link['arg'] >
 	>
 	type $mol_link__hint_hyoo_search_app_80 = $mol_type_enforce<
 		string
@@ -4598,42 +4586,60 @@ declare namespace $ {
 		,
 		ReturnType< $mol_link['sub'] >
 	>
-	type $mol_list__rows_hyoo_search_app_82 = $mol_type_enforce<
-		readonly(any)[]
+	type $mol_link__arg_hyoo_search_app_82 = $mol_type_enforce<
+		({ 
+			'settings': any,
+			'sideview': ReturnType< $hyoo_search_app['result_embed'] >,
+		}) 
 		,
-		ReturnType< $mol_list['rows'] >
+		ReturnType< $mol_link['arg'] >
 	>
-	type $mol_view__title_hyoo_search_app_83 = $mol_type_enforce<
+	type $mol_link__hint_hyoo_search_app_83 = $mol_type_enforce<
 		string
 		,
-		ReturnType< $mol_view['title'] >
+		ReturnType< $mol_link['hint'] >
 	>
-	type $mol_view__sub_hyoo_search_app_84 = $mol_type_enforce<
-		readonly(any)[]
-		,
-		ReturnType< $mol_view['sub'] >
-	>
-	type $mol_link__uri_hyoo_search_app_85 = $mol_type_enforce<
-		ReturnType< $hyoo_search_app['result_uri'] >
-		,
-		ReturnType< $mol_link['uri'] >
-	>
-	type $mol_link__target_hyoo_search_app_86 = $mol_type_enforce<
-		string
-		,
-		ReturnType< $mol_link['target'] >
-	>
-	type $mol_link__sub_hyoo_search_app_87 = $mol_type_enforce<
+	type $mol_link__sub_hyoo_search_app_84 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_link['sub'] >
 	>
-	type $mol_link_iconed__title_hyoo_search_app_88 = $mol_type_enforce<
+	type $mol_list__rows_hyoo_search_app_85 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_list['rows'] >
+	>
+	type $mol_view__title_hyoo_search_app_86 = $mol_type_enforce<
+		string
+		,
+		ReturnType< $mol_view['title'] >
+	>
+	type $mol_view__sub_hyoo_search_app_87 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $mol_link__uri_hyoo_search_app_88 = $mol_type_enforce<
+		ReturnType< $hyoo_search_app['result_uri'] >
+		,
+		ReturnType< $mol_link['uri'] >
+	>
+	type $mol_link__target_hyoo_search_app_89 = $mol_type_enforce<
+		string
+		,
+		ReturnType< $mol_link['target'] >
+	>
+	type $mol_link__sub_hyoo_search_app_90 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_link['sub'] >
+	>
+	type $mol_link_iconed__title_hyoo_search_app_91 = $mol_type_enforce<
 		string
 		,
 		ReturnType< $mol_link_iconed['title'] >
 	>
-	type $mol_link_iconed__uri_hyoo_search_app_89 = $mol_type_enforce<
+	type $mol_link_iconed__uri_hyoo_search_app_92 = $mol_type_enforce<
 		ReturnType< $hyoo_search_app['searcher_link'] >
 		,
 		ReturnType< $mol_link_iconed['uri'] >
@@ -4673,6 +4679,8 @@ declare namespace $ {
 		Donate_icon( ): $mol_icon_gift_outline
 		Donate( ): $mol_link
 		Lights( ): $mol_lights_toggle
+		Info_icon( ): $mol_icon_information_slab_circle_outline
+		Info( ): $mol_link
 		Sources( ): $mol_link_source
 		Settings_close_icon( ): $mol_icon_close
 		Settings_close( ): $mol_link
@@ -4752,7 +4760,7 @@ declare namespace $.$$ {
             type: () => "image" | "web";
             backend: () => $hyoo_search_api_external;
             future: (query: string) => {
-                promise: Promise<readonly Readonly<{
+                promise: $mol_promise<readonly Readonly<{
                     image?: Readonly<{
                         width: string;
                         height: string;
@@ -4773,52 +4781,7 @@ declare namespace $.$$ {
                     title: string;
                     titleNoFormatting: string;
                     visibleUrl: string;
-                }>[]> & {
-                    done: (res: readonly Readonly<{
-                        image?: Readonly<{
-                            width: string;
-                            height: string;
-                            url: string;
-                        }> | undefined;
-                        content?: string | undefined;
-                        contentNoFormatting?: string | undefined;
-                        richSnippet?: Readonly<{
-                            metatags?: Readonly<Record<string, string>> | undefined;
-                        }> | undefined;
-                        thumbnailImage?: Readonly<{
-                            width: string;
-                            height: string;
-                            url: string;
-                        }> | undefined;
-                        url?: string | undefined;
-                        contextUrl?: string | undefined;
-                        title: string;
-                        titleNoFormatting: string;
-                        visibleUrl: string;
-                    }>[] | PromiseLike<readonly Readonly<{
-                        image?: Readonly<{
-                            width: string;
-                            height: string;
-                            url: string;
-                        }> | undefined;
-                        content?: string | undefined;
-                        contentNoFormatting?: string | undefined;
-                        richSnippet?: Readonly<{
-                            metatags?: Readonly<Record<string, string>> | undefined;
-                        }> | undefined;
-                        thumbnailImage?: Readonly<{
-                            width: string;
-                            height: string;
-                            url: string;
-                        }> | undefined;
-                        url?: string | undefined;
-                        contextUrl?: string | undefined;
-                        title: string;
-                        titleNoFormatting: string;
-                        visibleUrl: string;
-                    }>[]>) => void;
-                    fail: (error?: any) => void;
-                };
+                }>[]>;
             };
             execute_async: (query: string) => readonly Readonly<{
                 image?: Readonly<{
@@ -4905,7 +4868,7 @@ declare namespace $.$$ {
         result_words(index: number): Map<string, number>;
         words(): Map<string, number>;
         exclude_options(): readonly string[];
-        exclude_badge_title(index: number): string;
+        exclude_badge_title(word: string): string;
         result_ban_options(index: number): string[];
         result_ban(index: number, host?: string): string;
         result_uri(index: number): string;
