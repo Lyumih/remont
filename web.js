@@ -1940,7 +1940,7 @@ var $;
         handler = handler2;
         error = undefined;
         result = undefined;
-        window.dispatchEvent(new Event('$mol_try'));
+        self.dispatchEvent(new Event('$mol_try'));
         const error2 = error;
         const result2 = result;
         error = undefined;
@@ -5408,9 +5408,7 @@ var $;
 var $;
 (function ($) {
     class $mol_file_web extends $mol_file_webdav {
-        static base = $mol_dom_context.document?.currentScript
-            ? new URL('.', $mol_dom_context.document.currentScript['src']).toString()
-            : '';
+        static base = new URL('.', ($mol_dom_context.document?.currentScript)['src'] ?? globalThis.location.href).toString();
         version() { return '1'; }
         info() {
             try {
@@ -11678,6 +11676,9 @@ var $;
 
 ;
 "use strict";
+
+;
+"use strict";
 var $;
 (function ($) {
     var $$;
@@ -12026,9 +12027,6 @@ var $;
 (function ($) {
     $mol_style_attach("hyoo/search/app/app.view.css", "#recaptcha\\-wrapper {\n\tmargin: var(--mol_gap_block) !important;\n}\n\n#recaptcha\\-wrapper a,\n#recaptcha\\-wrapper .gs\\-captcha\\-info\\-link {\n\ttext-decoration: none;\n\tcolor: var(--mol_theme_control);\n}\n\n[hyoo_search_app_main] {\n\tflex: 1 0 40rem;\n}\n\n[hyoo_search_app_sideview] {\n\tflex: 10000 0 40rem;\n\tbox-shadow: 0 0 0 1px var(--mol_theme_line);\n\tz-index: 2;\n\tbackground: white;\n}\n\n[hyoo_search_app_content] {\n\tflex-direction: column;\n\tpadding: var(--mol_gap_block);\n}\n\n[hyoo_search_app_sideview_hint] {\n\tflex: 1 1 auto;\n\tpadding: 0 .25rem;\n\tfont-size: .75rem;\n\tjustify-content: center;\n}\n\n[hyoo_search_app_sideview_embed] {\n\tposition: absolute;\n\twidth: 100%;\n\theight: 100%;\n\tmax-height: 100%;\n\taspect-ratio: auto;\n\tborder-radius: 0;\n\tbackground: transparent;\n}\n\n[hyoo_search_app_settings] {\n\tflex: 0 0 25rem;\n}\n\n[hyoo_search_app_result_item] {\n\tpadding: 0;\n\tbackground: var(--mol_theme_card);\n}\n\n[hyoo_search_app_result_image] {\n\tflex: 1 0 6rem;\n\tmax-height: 6rem;\n\tobject-fit: scale-down;\n}\n\n[hyoo_search_app_result_info] {\n\tflex: 1 1 auto;\n\tflex-wrap: wrap;\n\talign-items: center;\n\talign-content: center;\n}\n\n[hyoo_search_app_result_main] {\n\tflex: 10000 1 14rem;\n}\n\n[hyoo_search_app_result_title] {\n\tcolor: var(--mol_theme_text);\n\ttext-shadow: 0 0;\n}\n\n[hyoo_search_app_result_descr] {\n\tcolor: var(--mol_theme_text);\n}\n\n[hyoo_search_app_main_tools] {\n\tflex-grow: 0;\n}\n\n[hyoo_search_app_result_title_low] {\n\topacity: 1;\n}\n\n[hyoo_search_app_result_descr_low] {\n\topacity: 1;\n}\n\n[hyoo_search_app_result_host_low] {\n\topacity: 1;\n}\n\n[hyoo_search_app_result_list] {\n\tgap: var(--mol_gap_block);\n}\n\n[hyoo_search_app_result_list_empty] {\n\tpadding: var(--mol_gap_text);\n}\n\n[hyoo_search_app_attribution] {\n\tpadding: var(--mol_gap_text);\n}\n\n[hyoo_search_app_result_ban_option_label] {\n\ttext-align: right;\n}\n");
 })($ || ($ = {}));
-
-;
-"use strict";
 
 ;
 	($.$remont_market) = class $remont_market extends ($.$mol_page) {
